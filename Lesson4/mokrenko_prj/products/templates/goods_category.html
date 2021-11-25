@@ -1,0 +1,31 @@
+{% extends 'base.html'%}
+
+{% block content %}
+{% for category in categories %}
+<h1>
+    Список товаров раздела "{{ category.name }}"
+</h1>
+<table>
+    <tr>
+        <th>Название</th>
+        <th>Цена</th>
+        <th>Единица измерения</th>
+        <th>Дата поступления</th>
+        <th>Поставщик</th>
+        <th>Раздел</th>
+    </tr>
+    {% for object in category.get_products %}
+        <tr>
+            <td>{{ object.title }}</td>
+            <td>{{ object.price }}</td>
+            <td>{{ object.unit }}</td>
+            <td>{{ object.created_at }}</td>
+            <td>{{ object.vendor }}</td>
+            <td>
+                {%for o in object.category.all%} {{o.name}} {%endfor%}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endfor %}
+{% endblock %}
