@@ -1,6 +1,9 @@
-{% load static %}
-<link rel="stylesheet" href="{% static 'style.css' %}">
-
+{% extends 'base.html'%}
+{% block title %}Главная страница{% endblock %}
+{% block content %}
+<h1>
+    Список всех товаров
+</h1>
 <table>
     <tr>
         <th>Название</th>
@@ -8,6 +11,7 @@
         <th>Единица измерения</th>
         <th>Дата поступления</th>
         <th>Поставщик</th>
+        <th>Раздел</th>
     </tr>
     {% for object in object_list %}
         <tr>
@@ -16,6 +20,10 @@
             <td>{{ object.unit }}</td>
             <td>{{ object.created_at }}</td>
             <td>{{ object.vendor }}</td>
+            <td>
+                {%for o in object.category.all%} {{o.name}} {%endfor%}
+            </td>
         </tr>
     {% endfor %}
 </table>
+{% endblock %}

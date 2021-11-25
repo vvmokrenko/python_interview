@@ -1,9 +1,40 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
+class Category(models.Model):
+    name = models.CharField(
+        verbose_name='имя',
+        max_length=64,
+        unique=True,
+    )
+
+    description = models.TextField(
+        verbose_name='описание',
+        blank=True,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    slug = models.SlugField(unique=True, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'категория'
+        verbose_name_plural = 'категории'
+
+    @property
+    def get_products(self):
+        return Good_Item.objects.filter(category=self.id)
 
 class Good_Item(models.Model):
+    category = models.ManyToManyField(Category,
+                                      'category_rel_name')
+
     created_at = models.DateTimeField(
         verbose_name=u'Дата поступления',
         auto_created=True,
