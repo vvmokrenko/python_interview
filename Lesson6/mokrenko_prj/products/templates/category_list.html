@@ -1,0 +1,19 @@
+<h1>
+    Список разделов
+</h1>
+<table>
+    <tr>
+        <th>Имя</th>
+        <th>
+            site
+        </th>
+    </tr>
+    {% for o in categoryobjects %}
+        <tr>
+            <td>
+                <a href="{% url 'products:products_by_category' o.slug %}">{{ o.name }}</a>
+            </td>
+            <td> {{o.site.name}} </td>
+        </tr>
+    {% endfor %}
+</table>
