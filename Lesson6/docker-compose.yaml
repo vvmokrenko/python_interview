@@ -1,0 +1,35 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:13.4
+    privileged: true
+    restart: always
+    ports:
+      - 54323:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: postgres
+
+  backend:
+    build:
+      context: ./mokrenko_prj
+    environment:
+      DJANGO_SETTINGS_MODULE: mokrenko_prj.settings.prod_int
+    ports:
+      - 8080:8080
+    command: bash -c "
+      python manage.py migrate
+      && gunicorn mokrenko_prj.wsgi -b 0.0.0.0:8080
+      "
+    depends_on:
+      - db
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - 8000:8000
+    depends_on:
+      - backend
